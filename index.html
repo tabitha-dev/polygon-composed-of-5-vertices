@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="https://getfirebug.com/firebug-lite-debug.js"></script>
+    <meta name="description" content="CS4406 Computer Graphics - Exercise #1" />
+    <meta charset="utf-8" />
+    
+    
+    <style>
+        #container {
+            background: #000000;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <meta charset=utf-8 />
+    <title>CS4406 Computer Graphics - Exercise #1</title>
+
+    <style id="jsbin-css">
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+    </div>
+    <!--  [MODIFIED] Downloaded the latest version of the JavaScript Libraries since orginal ones with Homework were outdated-->
+    <!--Official jQuery content delivery network (CDN) website-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+    <!--cdnjs is a free/open-source software CDN hosted by Cloudflare-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"
+        integrity="sha512-WoO4Ih0CDOSLYafy22wZD/mcJ7k0ESLqtQsFa6zFKnEUrbtuGU+GkLtVhgt93xa2qewG5gKEC6CWlN8OaCTSVg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"
+        integrity="sha512-0tlhMhMGPohLm/YwaskxH7jJuUGqU/XPTl+HE0dWrhGbpEBRIZYMQdbHC0CmyNPzZKTBd8JoVZnvMcL7hzlFOg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.0.0/math.min.js"
+        integrity="sha512-HxX/8O26bKyhfCRmHNjMvAdFtPTOVVm24y/gp0D2F1o0hIhCbCrk7PKxZ//wIwKlkDpE1cjWKfLyfRjxjyKIhQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+
+
+        // set the scene size
+        var WIDTH = 500, HEIGHT = 500;
+
+        // set some camera attributes
+        var VIEW_ANGLE = 45, ASPECT = WIDTH / HEIGHT, NEAR = 1, FAR = 1000;
+
+        // get the DOM element to attach to
+        var $container = $('#container');
+
+        // create a WebGL renderer, camera, and a scene
+
+        var renderer = new THREE.WebGLRenderer();
+        var scene = new THREE.Scene();
+        var clock = new THREE.Clock();
+        var camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+        // the camera starts at 0,0,0 so pull it back
+        camera.position.z = 200;
+        // add the camera to the scene
+        scene.add(camera)
+
+        // set up the camera controls.  Please keep in mind that what this does is move the entire scene around.
+        // because the entire scene is moving the position of the camera and lights in relation to objects within 
+        // the scene doesn't change so the lighting on the surface of the object(s) will not change either
+
+
+        // [MODIFIED] this is what move the entire scene around and therefore since we will move the scene in Animate Object, commenting this out. 
+        // var cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
+        // cameraControls.addEventListener('mousemove', renderer);
+        // cameraControls.autoRotate = true;
+
+        // start the renderer
+        renderer.setSize(WIDTH, HEIGHT);
+        // [MODIFIED] We need to attach / append the child to DOM so that we can see our virtual element in the HTML document rendered. var renderer = new THREE.WebGLRenderer(); is a statement that creates an instance of the THREE.WebGLRenderer object from three.min.js. This object is responsible for rendering Three.js animations and scenes using the WebGL graphics API.We created that instance above and hence we need to attach the renderer to the container element.
+        document.body.appendChild(renderer.domElement); 
+        $container.append(renderer.domElement);
+
+        // ----------------------------------------------------------------------------------------
+        //  END OF THE STANDARD CODE FOR THE ASSIGNMENT
+        //  Following this is where you must place your own custom code to complete the assignment
+        // ----------------------------------------------------------------------------------------
+
+
+
+
+        // create a new PerspectiveCamera object
+
+        var camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        // set the camera's position
+
+        camera.position.set(1, 1, 100);
+
+        // set the camera's target using the lookAt method
+
+        camera.lookAt(new THREE.Vector3(-1, 0, 10));
+
+        // create a new scene object
+
+        var scene = new THREE.Scene();
+
+        // This will create a new geometry object and push five vertices onto its vertices array. Each vertex is created using the THREE.Vector3 constructor and consists of three components representing its x, y, and z coordinates. The resulting geometry can be used to create a Three.js mesh or other object.
+
+
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3(2, 0, 0));
+        geometry.vertices.push(new THREE.Vector3(0, 7, 0));
+        geometry.vertices.push(new THREE.Vector3(5, 12, 0));
+        geometry.vertices.push(new THREE.Vector3(10, 7, 0));
+        geometry.vertices.push(new THREE.Vector3(8, 0, 0));
+
+        // This code adds three triangular faces to the existing geometry object, defining a square shape. It then creates a MeshBasicMaterial object with a blue color and double-sided rendering, and creates a mesh by combining the geometry and material. Finally, it sets the position of the mesh using the position property and adds it to the scene using the add method of the scene object.
+
+        // add faces to the geometry object
+        geometry.faces.push(new THREE.Face3(1, 2, 3));
+        geometry.faces.push(new THREE.Face3(0, 1, 3));
+        geometry.faces.push(new THREE.Face3(0, 3, 4));
+
+        // create a material with color and double-sided rendering
+
+        var material = new THREE.MeshBasicMaterial({
+            color: 0X0000FF,
+            side: THREE.DoubleSide
+        });
+
+        // create a mesh with the geometry and material
+
+        var squareMesh = new THREE.Mesh(geometry, material);
+
+        // set the position of the mesh in the scene
+        squareMesh.position.set(-1, -0.25, 2.0);
+
+        // add the mesh to the scene
+        scene.add(squareMesh);
+
+        // add ambient lighting
+        var ambientLight = new THREE.AmbientLight(0xffbb00);
+        scene.add(ambientLight);
+
+
+        // [MODIFIED] this function will indicate how much squaremesh should rotate on y and x axis. We also have to notify the render function about these new changes and render it all again.
+
+        var rotateMyPolygon = function(x, y) {
+            squareMesh.rotation.y += y;
+            squareMesh.rotation.x -= x;
+            renderer.render(scene, camera);
+        }
+
+
+        // ----------------------------------------------------------------------------------------
+        // END OF YOUR CUSTOM CODE FOR THE ASSIGNMENT
+        // The rendering functions that follow are standard and can be used for this assignment.
+        // You are welcome to customize them or create your own if you desire, however, you can
+        // simply use the code provided.
+
+
+        // Standard functions for rendering the scene.  Notice how we have the animate function 
+        // which submits a call to requestAnimationFrame to call animate.   This creates a loop
+        // that will render the scene again whenever something within the scene changes.
+        function animate() {
+            requestAnimationFrame(animate);
+            // [MODIFIED] we are removing the render function and instead replace it bby rotateMyPolygon which in turn will render the polygon around x and y axis.
+            rotateMyPolygon(0.009123, 0.008115);
+        }
+
+        function render() {
+            cameraControls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+
+</body>
+</html>
